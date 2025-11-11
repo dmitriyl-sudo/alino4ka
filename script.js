@@ -643,7 +643,7 @@ function animateScene2Text() {
             ease: "power2.inOut"
         })
         .to(scene2, {
-            background: "linear-gradient(to top, #a8c8d8 0%, #c2dae8 30%, #ddeef5 70%, #f0f8fc 100%)",
+            background: "linear-gradient(to top, #b8d4e6 0%, #d2e8f2 30%, #e8f4f8 70%, #f8fcff 100%)",
             duration: 3,
             ease: "power1.inOut"
         }, 0.8)
@@ -674,7 +674,7 @@ function animateScene2Text() {
             ease: "power2.inOut"
         })
         .to(scene2, {
-            background: "linear-gradient(to bottom, #f5f9fc 0%, #e8f4f9 30%, #d8ecf4 60%, #c8e0ef 100%)",
+            background: "linear-gradient(to bottom, #f8f0ff 0%, #e8d8f5 30%, #d8c0f0 60%, #c8a8eb 100%)",
             duration: 2,
             ease: "power2.inOut"
         }, 0.5)
@@ -861,9 +861,6 @@ function initCalmScene() {
         });
     }
     
-    // Add text reflection data attribute
-    const title = document.querySelector('.scene2-title');
-    title.setAttribute('data-text', title.textContent);
     
     animationMode = 'calm';
 }
@@ -1280,6 +1277,9 @@ function drawSoftClouds() {
     // Draw gentle sun rays
     drawSunRays(scene2Ctx, scene2Canvas.width, scene2Canvas.height, time, 0.2);
     
+    // Draw purple water surface
+    drawPurpleWaterSurface(scene2Ctx, scene2Canvas.width, scene2Canvas.height, time);
+    
     // Draw floating hearts
     hearts.forEach(heart => {
         heart.x += heart.vx;
@@ -1299,8 +1299,8 @@ function drawSoftClouds() {
         scene2Ctx.translate(heart.x, heart.y);
         scene2Ctx.rotate(heart.rotation);
         
-        // Light blue hearts for clouds scene
-        drawHeart(scene2Ctx, 0, 0, heart.size, 'rgba(220, 240, 255, ' + heartOpacity + ')', 1);
+        // Purple-pink hearts for clouds scene
+        drawHeart(scene2Ctx, 0, 0, heart.size, 'rgba(240, 200, 255, ' + heartOpacity + ')', 1);
         
         scene2Ctx.restore();
     });
@@ -1444,13 +1444,13 @@ function drawWaterSurface(ctx, canvasWidth, canvasHeight, time) {
     const waterHeight = canvasHeight * 0.45;
     const waterY = canvasHeight - waterHeight;
     
-    // Create bright water gradient with warmer tones
+    // Create bright blue water gradient without gray tones
     const waterGradient = ctx.createLinearGradient(0, waterY, 0, canvasHeight);
-    waterGradient.addColorStop(0, 'rgba(200, 220, 235, 0.3)');
-    waterGradient.addColorStop(0.2, 'rgba(180, 205, 225, 0.5)');
-    waterGradient.addColorStop(0.5, 'rgba(165, 190, 210, 0.7)');
-    waterGradient.addColorStop(0.8, 'rgba(150, 175, 195, 0.8)');
-    waterGradient.addColorStop(1, 'rgba(135, 160, 180, 0.9)');
+    waterGradient.addColorStop(0, 'rgba(220, 240, 255, 0.3)');
+    waterGradient.addColorStop(0.2, 'rgba(200, 225, 245, 0.5)');
+    waterGradient.addColorStop(0.5, 'rgba(180, 210, 235, 0.7)');
+    waterGradient.addColorStop(0.8, 'rgba(160, 195, 225, 0.8)');
+    waterGradient.addColorStop(1, 'rgba(140, 180, 215, 0.9)');
     
     // Draw main water surface
     ctx.fillStyle = waterGradient;
@@ -1508,6 +1508,80 @@ function drawWaterSurface(ctx, canvasWidth, canvasHeight, time) {
     edgeGradient.addColorStop(0, 'rgba(181, 201, 214, 0)');
     edgeGradient.addColorStop(0.3, 'rgba(181, 201, 214, 0.4)');
     edgeGradient.addColorStop(1, 'rgba(159, 179, 192, 0.6)');
+    
+    ctx.fillStyle = edgeGradient;
+    ctx.fillRect(0, waterY - 5, canvasWidth, 20);
+}
+
+function drawPurpleWaterSurface(ctx, canvasWidth, canvasHeight, time) {
+    // Draw purple water surface covering bottom 45% of screen
+    const waterHeight = canvasHeight * 0.45;
+    const waterY = canvasHeight - waterHeight;
+    
+    // Create purple water gradient
+    const waterGradient = ctx.createLinearGradient(0, waterY, 0, canvasHeight);
+    waterGradient.addColorStop(0, 'rgba(220, 180, 240, 0.3)');
+    waterGradient.addColorStop(0.2, 'rgba(200, 160, 220, 0.5)');
+    waterGradient.addColorStop(0.5, 'rgba(180, 140, 200, 0.7)');
+    waterGradient.addColorStop(0.8, 'rgba(160, 120, 180, 0.8)');
+    waterGradient.addColorStop(1, 'rgba(140, 100, 160, 0.9)');
+    
+    // Draw main water surface
+    ctx.fillStyle = waterGradient;
+    ctx.fillRect(0, waterY, canvasWidth, waterHeight);
+    
+    // Add water surface reflection effect with purple tones
+    const reflectionGradient = ctx.createRadialGradient(
+        canvasWidth * 0.5, waterY + waterHeight * 0.3, 0,
+        canvasWidth * 0.5, waterY + waterHeight * 0.3, canvasWidth * 0.8
+    );
+    reflectionGradient.addColorStop(0, 'rgba(240, 220, 255, 0.3)');
+    reflectionGradient.addColorStop(0.6, 'rgba(220, 200, 235, 0.2)');
+    reflectionGradient.addColorStop(1, 'rgba(200, 180, 215, 0.1)');
+    
+    ctx.fillStyle = reflectionGradient;
+    ctx.fillRect(0, waterY, canvasWidth, waterHeight);
+    
+    // Add animated water ripples with purple highlights
+    for (let i = 0; i < 7; i++) {
+        const rippleY = waterY + (waterHeight * 0.15) + (i * waterHeight * 0.12);
+        const waveOffset = Math.sin(time * 0.4 + i * 0.7) * 12;
+        
+        // Create purple ripple gradient
+        const rippleGradient = ctx.createLinearGradient(0, rippleY - 8, 0, rippleY + 8);
+        rippleGradient.addColorStop(0, 'rgba(255, 220, 255, 0)');
+        rippleGradient.addColorStop(0.5, `rgba(255, 220, 255, ${0.2 + Math.sin(time * 0.8 + i) * 0.1})`);
+        rippleGradient.addColorStop(1, 'rgba(255, 220, 255, 0)');
+        
+        ctx.fillStyle = rippleGradient;
+        
+        // Draw wavy ripple line
+        ctx.beginPath();
+        ctx.moveTo(0, rippleY + waveOffset);
+        for (let x = 0; x <= canvasWidth; x += 15) {
+            const waveY = rippleY + Math.sin((x + time * 60) * 0.008) * 4 + waveOffset;
+            ctx.lineTo(x, waveY);
+        }
+        ctx.lineTo(canvasWidth, rippleY + 15);
+        ctx.lineTo(0, rippleY + 15);
+        ctx.closePath();
+        ctx.fill();
+    }
+    
+    // Add stronger surface highlights with purple tint
+    const highlightGradient = ctx.createLinearGradient(0, waterY, 0, waterY + waterHeight * 0.25);
+    highlightGradient.addColorStop(0, 'rgba(255, 240, 255, 0.25)');
+    highlightGradient.addColorStop(0.5, 'rgba(255, 240, 255, 0.1)');
+    highlightGradient.addColorStop(1, 'rgba(255, 240, 255, 0)');
+    
+    ctx.fillStyle = highlightGradient;
+    ctx.fillRect(0, waterY, canvasWidth, waterHeight * 0.25);
+    
+    // Add water edge effect with purple tones
+    const edgeGradient = ctx.createLinearGradient(0, waterY - 5, 0, waterY + 15);
+    edgeGradient.addColorStop(0, 'rgba(220, 180, 240, 0)');
+    edgeGradient.addColorStop(0.3, 'rgba(220, 180, 240, 0.4)');
+    edgeGradient.addColorStop(1, 'rgba(200, 160, 220, 0.6)');
     
     ctx.fillStyle = edgeGradient;
     ctx.fillRect(0, waterY - 5, canvasWidth, 20);
