@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Открытка ✨</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- SplitType CDN -->
+    <script src="https://unpkg.com/split-type"></script>
+    
+    <!-- Lottie for confetti animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+    <!-- Scene 1 wrapper -->
+    <div id="scene1">
+        <div id="canvas-container"></div>
+        
+        <div class="content">
+            <h1 class="main-title">Привет булочка! Это анимационная открытка абсолютно без повода</h1>
+            <button id="open-btn" class="open-button">
+                <span class="btn-text">Открыть</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Scene 2 -->
+    <div id="scene2">
+        <h1 class="scene2-title">Рядом с тобой - мне хорошо</h1>
+        <p class="scene2-sub"></p>
+        <canvas id="scene2-canvas"></canvas>
+    </div>
+    
+    <!-- Confetti container -->
+    <div id="confetti-container"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
